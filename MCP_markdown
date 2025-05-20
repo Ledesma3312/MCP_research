@@ -1,0 +1,139 @@
+# Model Context Protocol (MCP) and Integration with .Stat Suite
+
+## 1. What is MCP?
+
+**Model Context Protocol (MCP)** is an open protocol that standardizes how applications provide context to large language models (LLMs).
+
+> Think of MCP like a USB-C port for AI applications. Just as USB-C provides a standardized way to connect devices to various peripherals, MCP provides a standardized way to connect AI models to diverse data sources and tools.
+
+Official website: [modelcontextprotocol.io](https://modelcontextprotocol.io)
+
+---
+
+## 2. How Does MCP Work?
+
+MCP is inspired by the **Language Server Protocol (LSP)** and enables secure, structured communication between models, tools, and data sources.
+
+### Core Components
+
+- **MCP Host**  
+- **MCP Client**  
+- **MCP Server**
+
+These components enable a typical workflow where:
+1. A user sends a prompt to the MCP client.
+2. The client analyzes the intent and queries the MCP server.
+3. External APIs/tools are invoked.
+4. The system retrieves and processes data, then responds back to the user.
+
+### Communication Layer
+
+- The MCP client initiates communication by querying the server’s capabilities.
+- The server replies with a list of available tools and resources.
+- A continuous exchange of notifications keeps the client updated with server status and changes.
+
+### Security Considerations
+
+- The protocol must mitigate configuration drift.
+- Developers are encouraged to use **infrastructure-as-code (IaC)** and **automated configuration management**.
+
+---
+
+## 3. MCP Ecosystem Adoption
+
+### AI Models and Frameworks
+
+- **Anthropic (Claude)** – Full support for MCP in desktop version.
+- **OpenAI** – Agent SDK and API support.
+- **Baidu Maps** – Geolocation via MCP.
+- **Blender MCP** – Natural language-based 3D model generation.
+
+### Developer Tools
+
+- **Replit** – MCP tools in coding environments.
+- **Microsoft Copilot Studio** – Integrated MCP-based tools.
+- **Sourcegraph Cody** – MCP via OpenCTX.
+- **Codeium** – MCP-enabled cross-system coding tasks.
+- **Cursor** – Composer integration for MCP-based execution.
+- **Cline** – VS Code agent with MCP support.
+
+### IDEs / Editors
+
+- **Zed, JetBrains, Theia, Emacs, OpenSumi, Windsurf Editor** – Support for MCP-enabled commands and tools.
+
+### Cloud & Platforms
+
+- **Cloudflare** – Remote MCP hosting and OAuth integration.
+- **Block (Square)** – Enhances financial data processing.
+- **Stripe** – MCP-based API exposure for payment systems.
+
+### Web Automation and Data
+
+- **Apify MCP Tester** – Server connection testing via SSE.
+- **LibreChat, Goose** – Build AI agents with MCP interaction.
+
+---
+
+## 4. Possibilities for Integration with .Stat Suite
+
+While MCP and .Stat Suite originate from different domains (AI interaction vs statistical data systems), integration is possible via APIs.
+
+### 1. Accessing .Stat Suite Data via MCP Tools
+
+- Define a tool specification for .Stat's **SDMX REST API**.
+- Query statistical indicators via MCP-compatible tools.
+- Output structured JSON for model input.
+
+**Example Query**:  
+“What was the unemployment rate in France in 2022?”
+
+### 2. Automatic Query Generation
+
+LLMs can:
+
+- Understand natural language questions.
+- Convert to SDMX RESTful queries.
+- Return processed results in conversational formats.
+
+### 3. Conversational Interface for Statistics
+
+By combining:
+
+- MCP for intelligent dialogue,
+- .Stat Suite as a data backend,
+- And a web/desktop UI,
+
+...you can create a smart assistant for statistical exploration and analysis.
+
+---
+
+## 5. Technical Requirements for Integration
+
+- Access to `.Stat Suite` API endpoints (e.g., `/rest/data/`)
+- MCP tool definition in JSON
+- Middleware to convert SDMX responses to readable JSON
+- Optional: Persistent memory for storing user preferences and past queries
+
+---
+
+## 6. Conclusion
+
+**Model Context Protocol** offers a powerful foundation for building intelligent, context-aware AI agents. Integration with **.Stat Suite** allows:
+
+- Conversational access to public data
+- Natural language data exploration
+- Personalized statistical reporting
+
+This can support data journalists, researchers, policymakers, and citizens seeking transparent and intelligent access to statistics.
+
+---
+
+## References
+
+- [OpenAI Documentation on Model Memory](https://platform.openai.com/docs/guides/gpt-models/persistent-memory)
+- [.Stat Suite GitHub Repository](https://github.com/siscc/.Stat)
+- [SDMX RESTful API Specification](https://sdmx.org/?page_id=5096)
+- [MCP ArXiv Preprint (2024)](https://arxiv.org/abs/2503.23278)
+- [MCP Introduction](https://modelcontextprotocol.io/introduction)
+- [MCP GitHub Repository](https://github.com/modelcontextprotocol)
+- [Python SDK for MCP](https://github.com/modelcontextprotocol/python-sdk)
