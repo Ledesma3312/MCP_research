@@ -26,6 +26,95 @@ These components enable a typical workflow where:
 3. External APIs/tools are invoked.
 4. The system retrieves and processes data, then responds back to the user.
 
+## MCP Workflow (Model Context Protocol)
+
+**Prompt (from user):**  
+> "Can you please fetch the latest stock price of AAPL and notify me via email?"
+
+---
+
+## 🧠 Step-by-step Workflow
+
+### 1. User Input
+- The user sends a prompt to the system.
+
+### 2. Intent Analysis (Handled by MCP Clients)
+- MCP Clients analyze the intent of the user.
+- Clients reside in various **MCP Hosts** such as:
+  - Chat Apps
+  - IDEs
+  - AI Agents
+
+### 3. Orchestration
+- MCP Clients orchestrate tasks like:
+  - **Notification**
+  - **Sampling**
+
+### 4. Transfer Layer (Client ↔ Server Communication)
+Communication occurs in three stages:
+1. **Initial Request** – Client queries server capabilities.
+2. **Initial Response** – Server responds with available tools/resources.
+3. **Notification** – Continuous updates between client and server.
+
+> Communication follows a 1:1 structure for stability and synchronization.
+
+### 5. Tool Selection (Handled by MCP Servers)
+- MCP Servers select tools/resources based on capabilities.
+- Servers integrate with platforms like:
+  - GitHub
+  - Google Drive
+  - Notion
+  - SQLite
+  - Local services (etc.)
+
+### 6. Capabilities Provided by MCP Servers:
+- **Tools** – e.g., APIs, scripts
+- **Resources** – e.g., documents, datasets
+- **Prompts** – pre-defined instructions/templates
+
+### 7. API Invocation
+- Servers invoke APIs to access:
+  - Web Services
+  - Databases
+  - Local Files
+
+---
+
+## 📌 Summary Diagram
+
+User ──▶ MCP Client (Intent Analysis)
+         │
+         ▼
+    ┌──────────────┐
+    │ MCP Hosts    │
+    │ (Apps, IDEs) │
+    └────┬─────────┘
+         │
+         ▼
+ Orchestration (Notification & Sampling)
+         │
+         ▼
+Transfer Layer (1:1)
+  ┌─────────────┬──────────────┐
+  │ Initial Req │ Initial Resp │
+  └─────────────┴──────────────┘
+         │
+         ▼
+   MCP Servers (Tool Selection)
+         │
+         ▼
+   Capabilities:
+   - Tools
+   - Resources
+   - Prompts
+         │
+         ▼
+   API Invocation → Data Sources:
+   - Web Services
+   - Databases
+   - Local Files
+
+
 ### Communication Layer
 
 - The MCP client initiates communication by querying the server’s capabilities.
@@ -38,6 +127,135 @@ These components enable a typical workflow where:
 - Developers are encouraged to use **infrastructure-as-code (IaC)** and **automated configuration management**.
 
 ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Technical specifications 
+---
+## MCP vs API Rest
+**how is the interaction between this protocols?**
+
+
+---
+## MCP support OpenID and auth2.0 for autentification?
+
+---
+## MCP vs A2A 
+
+---
+
+##  Basic diagram
+how would be the flow of the steps of how an agent connects to MCP -> .Stat Suite rest API to do a task. For example upload a data file
+
+---
+## MCP Store 
+- mcpappstore.com
+- sources: [Youtube](https://www.youtube.com/watch?v=7j_NE6Pjv-E)
+
+--
+
+## Communication Methods
+- Local servers use MCPServerStudio (Standard input/output)
+- Remote Servers user MCPServerSse (Server-Sent Events) for communication with HTTP/HTTPS
+
+# Claude(MCPClient) + Docker(MCPServer) 
+## Diagram
+┌─────────────────┐    MCP Protocol     ┌──────────────────────┐
+│   Claude        │◄──────────────────► │   MCP Docker Server  │
+│  (MCP Client)   │    JSON-RPC 2.0     │                      │
+└─────────────────┘       
+
+## MCP Client (Claude)
+- **Tipo**: AI Assistant actuando como MCP Client
+- **Protocolo**: JSON-RPC 2.0 sobre stdio/WebSocket
+- **Capacidades**: 
+  - Invocación de funciones remotas
+  - Manejo de respuestas asíncronas
+  - Gestión de sesiones múltiples
+
+## MCP Docker Server
+- **Nombre**: `local__MCP_DOCKER__*`
+- **Tipo**: Servidor MCP local
+- **Transporte**: stdio (standard input/output)
+- **Funcionalidades principales**:
+  - File System Operations
+  - Command Execution  
+  - Process Management
+  - Directory Management
+  - Search & Content Analysis
+
+## Funciones Disponibles
+
+### Gestión de Archivos
+- `read_file` / `read_multiple_files`
+- `write_file` / `edit_file`
+- `move_file` / `create_directory`
+
+### Sistema y Procesos
+- `execute_command`
+- `list_processes` / `kill_process`
+- `list_sessions` / `force_terminate`
+
+### Configuración
+- `get_config` / `set_config_value`
+- `list_allowed_directories`
+
+## Limitaciones de Seguridad
+- Directorios permitidos configurables
+- Comandos bloqueados por configuración
+- Límites de líneas para lectura/escritura
+- Timeouts configurables
+
+## Comunicación
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "local__MCP_DOCKER__read_file",
+  "params": {
+    "path": "/absolute/path/to/file"
+  },
+  "id": "request_id"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## 3. MCP Ecosystem Adoption
 
@@ -72,7 +290,46 @@ These components enable a typical workflow where:
 - **Apify MCP Tester** – Server connection testing via SSE.
 - **LibreChat, Goose** – Build AI agents with MCP interaction.
 
----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## 4. Possibilities for Integration with .Stat Suite
 
@@ -110,7 +367,7 @@ By combining:
 ## 5. Technical Requirements for Integration
 
 - Access to `.Stat Suite` API endpoints (e.g., `/rest/data/`)
-- MCP tool definition in JSON
+- MCP tool definition in JSON (MCP Server)
 - Middleware to convert SDMX responses to readable JSON
 - Optional: Persistent memory for storing user preferences and past queries
 
@@ -137,3 +394,4 @@ This can support data journalists, researchers, policymakers, and citizens seeki
 - [MCP Introduction](https://modelcontextprotocol.io/introduction)
 - [MCP GitHub Repository](https://github.com/modelcontextprotocol)
 - [Python SDK for MCP](https://github.com/modelcontextprotocol/python-sdk)
+
